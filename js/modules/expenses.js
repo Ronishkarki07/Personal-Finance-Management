@@ -142,6 +142,11 @@ const Expenses = (() => {
                 </div>
 
                 <div class="form-group">
+                    <label class="form-label">Bill Photo</label>
+                    <input type="file" class="form-control" name="billPhoto" accept="image/*">
+                </div>
+
+                <div class="form-group">
                     <label class="form-label">Description *</label>
                     <textarea class="form-control" name="description" rows="3" required></textarea>
                 </div>
@@ -160,7 +165,11 @@ const Expenses = (() => {
                 e.preventDefault();
                 const formData = new FormData(e.target);
                 const expenseData = Object.fromEntries(formData);
-
+                const fileInput = e.target.elements['billPhoto'];
+                if (fileInput && fileInput.files && fileInput.files[0]) {
+                    const file = fileInput.files[0];
+                    expenseData.billPhoto = await Helpers.fileToBase64(file);
+                }
                 try {
                     await createExpense(expenseData);
                     Helpers.hideModal();
@@ -186,9 +195,9 @@ const Expenses = (() => {
             description: expenseData.description,
             paymentMethod: expenseData.paymentMethod,
             amount: parseFloat(expenseData.amount),
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            billPhoto: expenseData.billPhoto || null
         };
-
         await Storage.save(Storage.STORES.EXPENSES, expense);
         return expense;
     }
@@ -238,6 +247,12 @@ const Expenses = (() => {
                 </div>
 
                 <div class="form-group">
+                    <label class="form-label">Bill Photo</label>
+                    <input type="file" class="form-control" name="billPhoto" accept="image/*">
+                    ${expense.billPhoto ? `<div style='margin-top:0.5rem'><img src='${expense.billPhoto}' alt='Bill Photo' style='max-width:100px;max-height:100px;'/></div>` : ''}
+                </div>
+
+                <div class="form-group">
                     <label class="form-label">Description *</label>
                     <textarea class="form-control" name="description" rows="3" required>${expense.description}</textarea>
                 </div>
@@ -257,7 +272,13 @@ const Expenses = (() => {
                 const formData = new FormData(e.target);
                 const updates = Object.fromEntries(formData);
                 updates.amount = parseFloat(updates.amount);
-
+                const fileInput = e.target.elements['billPhoto'];
+                if (fileInput && fileInput.files && fileInput.files[0]) {
+                    const file = fileInput.files[0];
+                    updates.billPhoto = await Helpers.fileToBase64(file);
+                } else {
+                    updates.billPhoto = expense.billPhoto || null;
+                }
                 try {
                     await Storage.save(Storage.STORES.EXPENSES, { ...expense, ...updates });
                     Helpers.hideModal();

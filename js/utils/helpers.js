@@ -1,3 +1,14 @@
+    /**
+     * Convert file to base64 string
+     */
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
 /**
  * Helper Utilities for Nepal Accounting System
  */
@@ -396,6 +407,7 @@ const Helpers = (() => {
         truncate,
         capitalize,
         getAccountTypeColor,
-        getVoucherTypeColor
+        getVoucherTypeColor,
+        fileToBase64
     };
 })();
