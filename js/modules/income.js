@@ -1,3 +1,18 @@
+// Static income categories for PHP version
+const staticIncomeCategories = [
+    { name: 'Salary', icon: '💼', color: '#43e97b' },
+    { name: 'Freelance', icon: '💻', color: '#38f9d7' },
+    { name: 'Business', icon: '🏢', color: '#667eea' },
+    { name: 'Investment', icon: '📈', color: '#4facfe' },
+    { name: 'Parents', icon: '👨‍👩‍👧‍👦', color: '#ff9ff3' },
+    { name: 'Gift', icon: '🎁', color: '#f093fb' },
+    { name: 'Other Income', icon: '💰', color: '#feca57' }
+];
+
+// Helper to get static income categories
+function getStaticIncomeCategories() {
+    return staticIncomeCategories;
+}
 /**
  * Income Module - Track all income sources
  */
@@ -102,9 +117,10 @@ const Income = (() => {
      * Show add income form
      */
     async function showAddIncomeForm() {
-        const categories = await Categories.getIncomeCategories();
+        // Use static income categories for PHP version
+        const categories = getStaticIncomeCategories();
         const categoryOptions = categories.map(c =>
-            `<option value="${c.name}">${c.name}</option>`
+            `<option value="${c.name}">${c.icon ? c.icon + ' ' : ''}${c.name}</option>`
         ).join('');
 
         const content = `
