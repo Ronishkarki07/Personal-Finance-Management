@@ -1,4 +1,4 @@
-    /**
+     /**
      * Convert file to base64 string
      */
     function fileToBase64(file) {
