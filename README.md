@@ -1,23 +1,96 @@
-# 💰 Personal Finance Manager
+# Personal Finance Manager - Full Stack Application
 
-**Track Your Money - Personal Finance Tracker for Nepal**
+A modern full-stack personal finance management application built with Next.js backend and React frontend.
 
-A complete, frontend-only personal finance management system built with HTML, CSS, and Vanilla JavaScript. Designed for individuals to track income, expenses, and manage their monthly budget in Nepal.
+## 🚀 Project Overview
 
----
+This project has been converted from a vanilla JavaScript/PHP application to a modern full-stack solution using:
+- **Backend**: Next.js API routes with MySQL
+- **Frontend**: React with modern hooks and routing
+- **Database**: MySQL with comprehensive schema
+- **Styling**: Custom CSS with theme support
+
+## 📁 Project Structure
+
+```
+Accounting System/
+├── accounting-backend/          # Next.js API Server
+│   ├── src/
+│   │   ├── app/api/            # API Routes
+│   │   └── lib/                # Database utilities
+│   ├── schema.sql              # Database schema
+│   ├── package.json
+│   └── README.md
+│
+├── accounting-frontend/         # React Application
+│   ├── src/
+│   │   ├── components/         # Reusable components
+│   │   ├── pages/             # Page components
+│   │   ├── services/          # API services
+│   │   └── utils/             # Utility functions
+│   ├── package.json
+│   └── README.md
+│
+└── README.md                   # This file
+```
+
+## 🛠 Quick Start
+
+### Prerequisites
+- Node.js 18+
+- MySQL 8+
+- npm or yarn
+
+### 1. Database Setup
+```bash
+# Create database
+mysql -u root -p
+CREATE DATABASE accounting_system;
+
+# Import schema
+mysql -u root -p accounting_system < accounting-backend/schema.sql
+```
+
+### 2. Backend Setup
+```bash
+cd accounting-backend
+npm install
+# Configure your database credentials in .env.local
+npm run dev  # Starts on http://localhost:3001
+```
+
+### 3. Frontend Setup
+```bash
+cd accounting-frontend
+npm install
+npm start  # Starts on http://localhost:3000
+```
 
 ## ✨ Features
 
-### 💵 Income Tracking
-- Track income from multiple sources (Salary, Freelance, Business, etc.)
-- Categorize income by type
-- Add detailed descriptions
-- View income history with search and filters
+### Dashboard
+- 📊 Real-time financial overview
+- 📈 Visual charts and graphs
+- 💰 Monthly income/expense tracking
+- 📝 Recent transactions
 
-### 💸 Expense Management
-- Record all your expenses
-- Categorize expenses (Food, Rent, Transportation, etc.)
-- Track payment methods (Cash, Bank, Card, Mobile Payment)
+### Income Management
+- ➕ Add income entries
+- 📂 Category-based organization
+- 🔍 Search and filtering
+- ✏️ Edit and delete functionality
+
+### Expense Management
+- 💸 Comprehensive expense tracking
+- 💳 Payment method logging
+- 📸 Bill photo uploads
+- 🏷️ Category management
+
+### Additional Features
+- 🌓 Dark/Light theme toggle
+- 📱 Fully responsive design
+- 🔔 Toast notifications
+- 📊 Data visualization with charts
 - Search and filter expense history
 
 ### 📅 Monthly View
