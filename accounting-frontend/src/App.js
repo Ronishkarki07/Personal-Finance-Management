@@ -74,6 +74,17 @@ function App() {
           </Routes>
         </main>
       </div>
+      <Toaster 
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+        }}
+      />
     </Router>
   );
 }

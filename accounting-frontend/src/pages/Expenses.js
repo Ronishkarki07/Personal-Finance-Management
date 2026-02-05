@@ -52,6 +52,12 @@ const Expenses = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Validate bill photo requirement for non-cash payments
+    if (formData.paymentMethod !== 'Cash' && !formData.billPhoto) {
+      toast.error('Bill photo or screenshot is required for non-cash payments');
+      return;
+    }
+    
     try {
       if (editingExpense) {
         await expensesAPI.updateExpense({ ...formData, id: editingExpense.id });
@@ -341,7 +347,7 @@ const Expenses = () => {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label>Bill Photo (Optional)</label>
+                  <label>Bill Photo {formData.paymentMethod === 'Cash' ? '(Optional)' : '(Required)'}</label>
                   <div className="file-upload">
                     <input
                       type="file"
@@ -349,6 +355,7 @@ const Expenses = () => {
                       onChange={handleFileUpload}
                       className="file-input"
                       id="bill-photo"
+                      required={formData.paymentMethod !== 'Cash' && formData.paymentMethod !== ''}
                     />
                     <label htmlFor="bill-photo" className="file-label">
                       <Camera size={20} />
