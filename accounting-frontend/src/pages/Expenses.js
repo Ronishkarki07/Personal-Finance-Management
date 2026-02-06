@@ -128,11 +128,17 @@ const Expenses = () => {
     return matchesSearch && matchesCategory;
   });
 
+  // Calculate total expenses
+  const calculateTotalExpenses = () => {
+    return filteredExpenses.reduce((total, expense) => total + parseFloat(expense.amount || 0), 0);
+  };
+
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'NPR',
-      minimumFractionDigits: 0
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
     }).format(amount).replace('NPR', 'Rs.');
   };
 
@@ -169,7 +175,13 @@ const Expenses = () => {
 
       <div className="card">
         <div className="card-header">
-          <h3>Expense History</h3>
+          <div className="card-header-content">
+            <h3>Expense History</h3>
+            <div className="balance-display">
+              <span className="balance-label">Total Expenses:</span>
+              <span className="balance-amount expense-amount">{formatCurrency(calculateTotalExpenses())}</span>
+            </div>
+          </div>
         </div>
         <div className="card-body">
           {/* Filters */}
