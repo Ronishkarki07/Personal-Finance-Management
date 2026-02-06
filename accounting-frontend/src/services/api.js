@@ -61,4 +61,19 @@ export const categoriesAPI = {
   deleteCategory: (id) => apiClient.delete(`/categories?id=${id}`),
 };
 
+// Budgets API
+export const budgetsAPI = {
+  getBudgets: (month, year) => {
+    let url = '/budgets';
+    const params = new URLSearchParams();
+    if (month) params.append('month', month);
+    if (year) params.append('year', year);
+    if (params.toString()) url += `?${params.toString()}`;
+    return apiClient.get(url);
+  },
+  createBudget: (budget) => apiClient.post('/budgets', budget),
+  updateBudget: (budget) => apiClient.put('/budgets', budget),
+  deleteBudget: (id) => apiClient.delete(`/budgets?id=${id}`),
+};
+
 export default apiClient;
