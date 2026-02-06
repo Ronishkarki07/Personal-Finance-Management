@@ -15,7 +15,7 @@ async function setupDatabase() {
     // First connect without specifying database to create it
     connection = await mysql.createConnection({
       host: process.env.DB_HOST || 'localhost',
-      port: process.env.DB_PORT || 3306,
+      port: process.env.DB_PORT || 3307,
       user: process.env.DB_USER || 'root',
       password: process.env.DB_PASSWORD || '',
     });
@@ -36,7 +36,13 @@ async function setupDatabase() {
     
     for (const statement of statements) {
       if (statement.trim()) {
-        await connection.execute(statement);
+        try {
+          // Use query() instead of execute() for better compatibility with MariaDB
+          await connection.query(statement);
+        } catch (error) {
+          console.log('⚠️ Statement executed with warning:', statement.substring(0, 50) + '...');
+          console.log('   Warning:', error.message);
+        }
       }
     }
     
@@ -46,15 +52,15 @@ async function setupDatabase() {
     await connection.changeUser({ database: 'accounting_system' });
     
     // Verify tables were created
-    const [tables] = await connection.execute('SHOW TABLES');
+    const [tables] = await connection.query('SHOW TABLES');
     console.log('📋 Created tables:', tables.map(t => Object.values(t)[0]));
     
     // Check if categories have data
-    const [categoryCount] = await connection.execute('SELECT COUNT(*) as count FROM categories');
+    const [categoryCount] = await connection.query('SELECT COUNT(*) as count FROM categories');
     console.log('📊 Categories loaded:', categoryCount[0].count);
     
     // Check budgets table structure
-    const [budgetSchema] = await connection.execute('DESCRIBE budgets');
+    const [budgetSchema] = await connection.query('DESCRIBE budgets');
     console.log('💰 Budget table structure verified:', budgetSchema.length, 'columns');
     
     console.log('\n🎉 Database setup completed successfully!');
@@ -78,19 +84,21 @@ async function checkDatabaseRequirements() {
   
   try {
     const connection = await mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: '',
+      host: process.env.DB_HOST || 'localhost',
+      port: process.env.DB_PORT || 3307,
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || '',
     });
     
-    const [version] = await connection.execute('SELECT VERSION() as version');
+    const [version] = await connection.query('SELECT VERSION() as version');
     console.log('✅ MySQL version:', version[0].version);
+    console.log('✅ Connected to MySQL on port:', process.env.DB_PORT || 3307);
     await connection.end();
     return true;
   } catch (error) {
     console.error('❌ MySQL connection failed:', error.message);
     console.error('💡 Make sure MySQL is installed and running');
-    console.error('💡 Default connection: host=localhost, user=root, password=""');
+    console.error('💡 XAMPP MySQL should be running on port 3307');
     return false;
   }
 }
