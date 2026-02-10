@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   BarChart3, 
@@ -9,12 +9,22 @@ import {
   PieChart, 
   Target, 
   FileText,
-  Menu
+  Menu,
+  X
 } from 'lucide-react';
 
-const Sidebar = ({ collapsed, onToggle }) => {
-  const location = useLocation();
+const Sidebar = ({ collapsed, onToggle, mobileOpen, onMobileToggle }) => {
+  const location = useLocation();  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
   const navItems = [
     { path: '/dashboard', icon: BarChart3, text: 'Dashboard', emoji: '📊' },
     { path: '/income', icon: DollarSign, text: 'Income', emoji: '💵' },
@@ -26,15 +36,27 @@ const Sidebar = ({ collapsed, onToggle }) => {
     { path: '/reports', icon: FileText, text: 'Reports', emoji: '📋' },
   ];
 
+  const handleNavItemClick = () => {
+    if (isMobile && onMobileToggle) {
+      onMobileToggle();
+    }
+  };
+
   return (
-    <aside className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+    <>
+      {/* Mobile Overlay */}
+      {isMobile && mobileOpen && (
+        <div className="sidebar-overlay" onClick={onMobileToggle} />
+      )}
+      
+      <aside className={`sidebar ${collapsed ? 'collapsed' : ''} ${mobileOpen ? 'show' : ''}`}>
       <div className="sidebar-header">
         <h1 className="logo">
           <span className="logo-icon">💰</span>
           {!collapsed && <span className="logo-text">My Finance</span>}
         </h1>
-        <button className="sidebar-toggle" onClick={onToggle}>
-          <Menu size={20} />
+        <button className="sidebar-toggle" onClick={isMobile ? onMobileToggle : onToggle}>
+          {isMobile && mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
@@ -48,6 +70,7 @@ const Sidebar = ({ collapsed, onToggle }) => {
               key={item.path}
               to={item.path}
               className={`nav-item ${isActive ? 'active' : ''}`}
+              onClick={handleNavItemClick}
             >
               <span className="nav-icon">
                 {collapsed ? item.emoji : <IconComponent size={20} />}
@@ -58,6 +81,7 @@ const Sidebar = ({ collapsed, onToggle }) => {
         })}
       </nav>
     </aside>
+    </>
   );
 };
 

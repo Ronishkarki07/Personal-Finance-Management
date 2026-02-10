@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { Menu } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Income from './pages/Income';
@@ -18,11 +19,27 @@ function App() {
   });
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
@@ -30,6 +47,10 @@ function App() {
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
@@ -46,6 +67,17 @@ function App() {
           }}
         />
         
+        {/* Mobile Menu Toggle */}
+        {isMobile && (
+          <button 
+            className="mobile-menu-toggle" 
+            onClick={toggleMobileMenu}
+            aria-label="Toggle mobile menu"
+          >
+            <Menu size={24} />
+          </button>
+        )}
+        
         {/* Theme Toggle */}
         <button 
           className="theme-toggle" 
@@ -58,6 +90,8 @@ function App() {
         <Sidebar 
           collapsed={sidebarCollapsed} 
           onToggle={toggleSidebar}
+          mobileOpen={mobileMenuOpen}
+          onMobileToggle={toggleMobileMenu}
         />
         
         <main className="main-content">
