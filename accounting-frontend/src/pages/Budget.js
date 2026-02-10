@@ -49,7 +49,15 @@ const Budget = () => {
     try {
       setLoading(true);
       const response = await budgetsAPI.getBudgets(selectedMonth, selectedYear);
-      setBudgets(response.data.data || []);
+      // Convert string values to numbers
+      const budgetsData = (response.data.data || []).map(budget => ({
+        ...budget,
+        budget_amount: parseFloat(budget.budget_amount),
+        spent_amount: parseFloat(budget.spent_amount),
+        remaining_amount: parseFloat(budget.remaining_amount),
+        spent_percentage: parseFloat(budget.spent_percentage)
+      }));
+      setBudgets(budgetsData);
     } catch (error) {
       console.error('Error loading budgets:', error);
       toast.error('Failed to load budget data');
@@ -69,7 +77,7 @@ const Budget = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       if (editingBudget) {
         await budgetsAPI.updateBudget({ ...formData, id: editingBudget.id });
@@ -78,7 +86,7 @@ const Budget = () => {
         await budgetsAPI.createBudget(formData);
         toast.success('Budget created successfully!');
       }
-      
+
       setShowModal(false);
       setEditingBudget(null);
       setFormData({
@@ -165,8 +173,8 @@ const Budget = () => {
     <div className="page-container">
       <div className="page-header">
         <h2>Budget Management</h2>
-        <button 
-          className="btn btn-primary" 
+        <button
+          className="btn btn-primary"
           onClick={() => setShowModal(true)}
         >
           <Plus size={20} /> Set Budget
@@ -246,7 +254,7 @@ const Budget = () => {
               </div>
             </div>
           </div>
-          
+
           {totalBudget > 0 && (
             <div className="overall-progress mt-3">
               <div className="progress-info">
@@ -254,7 +262,7 @@ const Budget = () => {
                 <span>{overallPercentage.toFixed(1)}%</span>
               </div>
               <div className="progress-bar">
-                <div 
+                <div
                   className="progress-fill"
                   style={{
                     width: `${Math.min(overallPercentage, 100)}%`,
@@ -278,7 +286,7 @@ const Budget = () => {
               {budgets.map((budget) => {
                 const status = getBudgetStatus(budget);
                 const StatusIcon = status.icon;
-                
+
                 return (
                   <div key={budget.id} className="budget-card">
                     <div className="budget-card-header">
@@ -289,14 +297,14 @@ const Budget = () => {
                         </div>
                       </div>
                       <div className="budget-actions">
-                        <button 
+                        <button
                           className="btn-icon btn-edit"
                           onClick={() => handleEdit(budget)}
                           title="Edit Budget"
                         >
                           <Edit2 size={16} />
                         </button>
-                        <button 
+                        <button
                           className="btn-icon btn-delete"
                           onClick={() => handleDelete(budget.id)}
                           title="Delete Budget"
@@ -305,7 +313,7 @@ const Budget = () => {
                         </button>
                       </div>
                     </div>
-                    
+
                     <div className="budget-amounts">
                       <div className="amount-row">
                         <span>Budgeted:</span>
@@ -317,20 +325,20 @@ const Budget = () => {
                       </div>
                       <div className="amount-row">
                         <span>Remaining:</span>
-                        <span 
+                        <span
                           className={`amount-remaining ${budget.remaining_amount < 0 ? 'over-budget' : ''}`}
                         >
                           {formatCurrency(budget.remaining_amount)}
                         </span>
                       </div>
                     </div>
-                    
+
                     <div className="budget-progress">
                       <div className="progress-info">
                         <span>{budget.spent_percentage.toFixed(1)}% used</span>
                       </div>
                       <div className="progress-bar">
-                        <div 
+                        <div
                           className="progress-fill"
                           style={{
                             width: `${Math.min(budget.spent_percentage, 100)}%`,
@@ -348,7 +356,7 @@ const Budget = () => {
               <DollarSign size={48} />
               <h3>No budgets set for this period</h3>
               <p>Start by setting budgets for your expense categories to track your spending.</p>
-              <button 
+              <button
                 className="btn btn-primary"
                 onClick={() => setShowModal(true)}
               >
@@ -365,8 +373,8 @@ const Budget = () => {
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>{editingBudget ? 'Edit Budget' : 'Set Budget'}</h3>
-              <button 
-                className="modal-close" 
+              <button
+                className="modal-close"
                 onClick={() => setShowModal(false)}
               >
                 ×
@@ -437,9 +445,9 @@ const Budget = () => {
                 </div>
               </div>
               <div className="modal-footer">
-                <button 
-                  type="button" 
-                  className="btn btn-secondary" 
+                <button
+                  type="button"
+                  className="btn btn-secondary"
                   onClick={() => setShowModal(false)}
                 >
                   Cancel

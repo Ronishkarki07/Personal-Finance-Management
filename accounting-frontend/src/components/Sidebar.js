@@ -14,7 +14,8 @@ import {
 } from 'lucide-react';
 
 const Sidebar = ({ collapsed, onToggle, mobileOpen, onMobileToggle }) => {
-  const location = useLocation();  const [isMobile, setIsMobile] = useState(false);
+  const location = useLocation();
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -25,6 +26,7 @@ const Sidebar = ({ collapsed, onToggle, mobileOpen, onMobileToggle }) => {
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
+
   const navItems = [
     { path: '/dashboard', icon: BarChart3, text: 'Dashboard', emoji: '📊' },
     { path: '/income', icon: DollarSign, text: 'Income', emoji: '💵' },
@@ -50,37 +52,37 @@ const Sidebar = ({ collapsed, onToggle, mobileOpen, onMobileToggle }) => {
       )}
       
       <aside className={`sidebar ${collapsed ? 'collapsed' : ''} ${mobileOpen ? 'show' : ''}`}>
-      <div className="sidebar-header">
-        <h1 className="logo">
-          <span className="logo-icon">💰</span>
-          {!collapsed && <span className="logo-text">My Finance</span>}
-        </h1>
-        <button className="sidebar-toggle" onClick={isMobile ? onMobileToggle : onToggle}>
-          {isMobile && mobileOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </div>
+        <div className="sidebar-header">
+          <h1 className="logo">
+            <span className="logo-icon">💰</span>
+            {!collapsed && <span className="logo-text">My Finance</span>}
+          </h1>
+          <button className="sidebar-toggle" onClick={isMobile ? onMobileToggle : onToggle}>
+            {isMobile && mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
 
-      <nav className="sidebar-nav">
-        {navItems.map((item) => {
-          const IconComponent = item.icon;
-          const isActive = location.pathname === item.path;
-          
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`nav-item ${isActive ? 'active' : ''}`}
-              onClick={handleNavItemClick}
-            >
-              <span className="nav-icon">
-                {collapsed ? item.emoji : <IconComponent size={20} />}
-              </span>
-              {!collapsed && <span className="nav-text">{item.text}</span>}
-            </Link>
-          );
-        })}
-      </nav>
-    </aside>
+        <nav className="sidebar-nav">
+          {navItems.map((item) => {
+            const IconComponent = item.icon;
+            const isActive = location.pathname === item.path;
+            
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`nav-item ${isActive ? 'active' : ''}`}
+                onClick={handleNavItemClick}
+              >
+                <span className="nav-icon">
+                  {collapsed ? item.emoji : <IconComponent size={20} />}
+                </span>
+                {!collapsed && <span className="nav-text">{item.text}</span>}
+              </Link>
+            );
+          })}
+        </nav>
+      </aside>
     </>
   );
 };

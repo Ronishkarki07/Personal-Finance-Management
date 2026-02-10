@@ -1,5 +1,6 @@
 /* ==========================================
    Personal Finance Manager - React App CSS
+   Modern React 18+ Patterns & Performance
    ========================================== */
 
 /* CSS Variables for Theming */
@@ -30,6 +31,11 @@
   
   --sidebar-width: 280px;
   --sidebar-collapsed-width: 70px;
+  
+  /* Animation variables for React 18+ transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
 }
 
 /* Dark Theme */
@@ -56,15 +62,236 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
-  transition: background-color 0.3s ease;
+  transition: background-color var(--transition-normal);
 }
 
 .app {
   display: flex;
   min-height: 100vh;
+  transition: opacity var(--transition-normal);
 }
 
-/* Theme Toggle */
+/* React 18+ Transition States */
+.app.transitioning {
+  opacity: 0.95;
+}
+
+/* Modern Loading States */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Loading Components */
+.loading-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  min-height: 200px;
+}
+
+.loading-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  z-index: 9999;
+}
+
+.loading-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loading-spinner {
+  color: var(--primary-color);
+}
+
+.loading-text {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.loading-text-inline {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+/* Loading Sizes */
+.loading-sm .loading-spinner { font-size: 1rem; }
+.loading-md .loading-spinner { font-size: 1.5rem; }
+.loading-lg .loading-spinner { font-size: 2rem; }
+.loading-xl .loading-spinner { font-size: 3rem; }
+
+/* Skeleton Loading */
+.page-skeleton {
+  padding: 2rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-header {
+  margin-bottom: 2rem;
+}
+
+.skeleton-line {
+  background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--border-color) 50%, var(--bg-tertiary) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.skeleton-title {
+  height: 2rem;
+  width: 60%;
+}
+
+.skeleton-subtitle {
+  height: 1rem;
+  width: 40%;
+}
+
+.skeleton-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.skeleton-card {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.skeleton-card-title {
+  height: 1.5rem;
+  width: 80%;
+}
+
+.skeleton-card-text {
+  height: 1rem;
+  width: 100%;
+}
+
+.skeleton-card-text.short {
+  width: 60%;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* Error Boundary Styles */
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 2rem;
+  background: var(--bg-secondary);
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-color);
+  margin: 2rem;
+}
+
+.error-content {
+  text-align: center;
+  max-width: 500px;
+}
+
+.error-icon {
+  color: var(--danger-color);
+  margin-bottom: 1.5rem;
+}
+
+.error-boundary h2 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.error-message {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.error-details {
+  text-align: left;
+  background: var(--bg-tertiary);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  border: 1px solid var(--border-color);
+}
+
+.error-details summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.error-stack {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Performance Optimized Transitions */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.5rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border-left: 3px solid transparent;
+  transform: translateZ(0); /* Enable hardware acceleration */
+  will-change: background-color, color, border-left-color;
+}
 .theme-toggle {
   position: fixed;
   bottom: 20px;
@@ -1014,40 +1241,7 @@ body {
   }
 }
 
-/* Original responsive styles (keeping existing functionality) */
-@media (max-width: 768px) {
-  .sidebar {
-    /* Styles handled above in new responsive section */
-  }
-  
-  .sidebar.show {
-    /* Styles handled above in new responsive section */
-  }
-  
-  .main-content {
-    /* Styles handled above in new responsive section */
-  }
-  
-  .page-header {
-    /* Styles handled above in new responsive section */
-  }
-  
-  .dashboard-stats {
-    /* Styles handled above in new responsive section */
-  }
-  
-  .dashboard-charts {
-    /* Styles handled above in new responsive section */
-  }
-  
-  .form-row {
-    /* Styles handled above in new responsive section */
-  }
-  
-  .modal {
-    /* Styles handled above in new responsive section */
-  }
-}
+
 
 /* ==========================================
    Monthly View Styles
