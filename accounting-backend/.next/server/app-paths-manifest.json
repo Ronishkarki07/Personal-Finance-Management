@@ -1,5 +1,7 @@
 {
-  "/api/goals/route": "app/api/goals/route.js",
+  "/api/dashboard/route": "app/api/dashboard/route.js",
+  "/api/income/route": "app/api/income/route.js",
   "/api/categories/route": "app/api/categories/route.js",
+  "/api/expenses/route": "app/api/expenses/route.js",
   "/api/budgets/route": "app/api/budgets/route.js"
 }

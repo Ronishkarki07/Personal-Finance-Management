@@ -67,7 +67,7 @@ body {
 /* Theme Toggle */
 .theme-toggle {
   position: fixed;
-  top: 20px;
+  bottom: 20px;
   right: 20px;
   z-index: 1000;
   background: var(--bg-secondary);
@@ -787,7 +787,7 @@ body {
 /* Theme Toggle Responsive Position */
 .theme-toggle {
   position: fixed;
-  top: 1rem;
+  bottom: 1rem;
   right: 1rem;
   z-index: 1000;
   background: var(--bg-secondary);
@@ -939,6 +939,8 @@ body {
   .theme-toggle {
     width: 42px;
     height: 42px;
+    bottom: 1rem;
+    right: 1rem;
   }
 }
 
@@ -992,6 +994,11 @@ body {
   .theme-toggle {
     width: 40px;
     height: 40px;
+  }
+  
+  .theme-toggle {
+    bottom: 1rem;
+    right: 1rem;
   }
 }
 
