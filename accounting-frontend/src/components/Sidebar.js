@@ -52,9 +52,8 @@ const Sidebar = ({ collapsed, onToggle, mobileOpen, onMobileToggle }) => {
       <aside className={`sidebar ${collapsed ? 'collapsed' : ''} ${mobileOpen ? 'show' : ''}`}>
         <div className="sidebar-header">
           <h1 className="logo">
-            <span className="logo-icon">💰</span>
-            {!collapsed && !isMobile && <span className="logo-text">My Finance</span>}
-            {isMobile && !collapsed && <span className="logo-text">My Finance</span>}
+            {!collapsed && !isMobile && <span className="logo-text">PaisaDiary</span>}
+            {isMobile && !collapsed && <span className="logo-text">PaisaDiary</span>}
           </h1>
           {!isMobile && (
             <button className="sidebar-toggle" onClick={onToggle}>
