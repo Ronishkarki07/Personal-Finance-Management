@@ -1097,6 +1097,510 @@ body {
   font-size: 1rem;
 }
 
+/* ==========================================
+   Accounting Journal & Reports Styles
+   ========================================== */
+
+/* Journal Container */
+.journal-container {
+  background: #fafafa;
+  min-height: 100vh;
+}
+
+.journal-header {
+  background: #ffffff;
+  border-bottom: 2px solid #333;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.journal-header h2 {
+  color: #1a1a1a;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.journal-header .page-subtitle {
+  color: #666;
+  margin: 0.25rem 0 0 0;
+  font-style: italic;
+}
+
+/* Journal Controls */
+.journal-controls {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.journal-period {
+  padding: 1.25rem 1.5rem;
+}
+
+.period-selector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.period-icon {
+  width: 20px;
+  height: 20px;
+  color: #333;
+}
+
+.period-label {
+  font-weight: 600;
+  color: #333;
+  font-family: 'Georgia', serif;
+}
+
+.date-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.journal-date-input {
+  background: #ffffff;
+  border: 1px solid #333;
+  padding: 0.5rem 0.75rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  border-radius: 2px;
+  color: #333;
+}
+
+.journal-date-input:focus {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0 0 0 1px #000;
+}
+
+.date-separator {
+  color: #666;
+  font-weight: 500;
+}
+
+.journal-export-btn {
+  background: #333;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Georgia', serif;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.journal-export-btn:hover {
+  background: #000;
+}
+
+.export-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Journal Tabs */
+.journal-tabs {
+  display: flex;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.journal-tab {
+  background: #f5f5f5;
+  border: none;
+  border-right: 1px solid #ddd;
+  padding: 0.875rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Georgia', serif;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.journal-tab:last-child {
+  border-right: none;
+}
+
+.journal-tab:hover {
+  background: #e8e8e8;
+  color: #333;
+}
+
+.journal-tab-active {
+  background: #ffffff !important;
+  color: #333 !important;
+  border-bottom: 2px solid #333;
+  position: relative;
+  z-index: 1;
+}
+
+.tab-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Trial Balance Sheet */
+.journal-balance-sheet {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-top: none;
+  min-height: 400px;
+}
+
+.balance-sheet-header {
+  background: #f8f8f8;
+  border-bottom: 2px solid #333;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+}
+
+.balance-sheet-header h3 {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.balance-period {
+  margin: 0.5rem 0 0 0;
+  color: #666;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.balance-accounts {
+  padding: 1.5rem;
+}
+
+.account-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #eee;
+  font-family: 'Courier New', monospace;
+}
+
+.account-entry:last-child {
+  border-bottom: 2px solid #333;
+  font-weight: 600;
+}
+
+.account-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.account-icon {
+  width: 20px;
+  height: 20px;
+  color: #333;
+}
+
+.expense-icon {
+  transform: rotate(180deg);
+  color: #d32f2f;
+}
+
+.account-name {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.account-amount {
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  min-width: 120px;
+  text-align: right;
+}
+
+.credit-amount {
+  color: #2e7d32;
+}
+
+.debit-amount {
+  color: #d32f2f;
+}
+
+.account-count {
+  font-size: 0.9rem;
+  color: #666;
+  font-family: 'Courier New', monospace;
+  text-align: right;
+  min-width: 120px;
+}
+
+.balance-entry {
+  background: #f8f8f8;
+  font-weight: 600;
+}
+
+/* General Ledger */
+.journal-ledger {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-top: none;
+  min-height: 400px;
+}
+
+.ledger-header {
+  background: #f8f8f8;
+  border-bottom: 2px solid #333;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+}
+
+.ledger-header h3 {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ledger-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 350px;
+}
+
+.ledger-section {
+  border-right: 1px solid #ddd;
+}
+
+.ledger-section:last-child {
+  border-right: none;
+}
+
+.ledger-section-header {
+  background: #f0f0f0;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid #333;
+  text-align: center;
+}
+
+.ledger-section-header h4 {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.credit-header h4 {
+  color: #2e7d32;
+}
+
+.debit-header h4 {
+  color: #d32f2f;
+}
+
+.ledger-entries {
+  padding: 1rem;
+}
+
+.ledger-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  font-family: 'Courier New', monospace;
+}
+
+.ledger-entry:hover {
+  background: #fafafa;
+}
+
+.entry-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.entry-details .account-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.account-percentage {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.entry-amount {
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+}
+
+.no-entries {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  padding: 2rem;
+}
+
+/* Financial Statement */
+.financial-statement {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-top: none;
+}
+
+.statement-header {
+  background: #f8f8f8;
+  border-bottom: 2px solid #333;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+}
+
+.statement-header h3 {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statement-period {
+  margin: 0.5rem 0 0 0;
+  color: #666;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.statement-body {
+  padding: 2rem;
+}
+
+.statement-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-family: 'Georgia', serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.statement-grid {
+  border: 1px solid #ddd;
+  background: #ffffff;
+}
+
+.statement-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid #f0f0f0;
+  font-family: 'Courier New', monospace;
+}
+
+.statement-row:last-child {
+  border-bottom: none;
+}
+
+.line-item {
+  color: #333;
+  font-weight: 500;
+}
+
+.line-value {
+  font-weight: 600;
+  color: #333;
+}
+
+.credit-value {
+  color: #2e7d32;
+}
+
+.debit-value {
+  color: #d32f2f;
+}
+
+.statement-separator {
+  height: 1px;
+  background: #333;
+  margin: 0.5rem 0;
+}
+
+.total-row {
+  background: #f8f8f8;
+  border-top: 2px solid #333;
+  border-bottom: 2px solid #333;
+  font-weight: 700;
+}
+
+.statement-note {
+  border: 1px solid #ddd;
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+  border-radius: 4px;
+}
+
+.positive-note {
+  background: #f1f8e9;
+  border-color: #8bc34a;
+}
+
+.negative-note {
+  background: #fff3e0;
+  border-color: #ff9800;
+}
+
+.note-header {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-family: 'Georgia', serif;
+}
+
+.positive-note .note-header {
+  color: #388e3c;
+}
+
+.negative-note .note-header {
+  color: #f57c00;
+}
+
+.statement-note p {
+  margin: 0;
+  color: #555;
+  line-height: 1.5;
+}
+
 /* Responsive Design */
 
 /* Mobile Menu Toggle */
@@ -1316,6 +1820,94 @@ body {
 
   .mobile-only {
     display: block;
+  }
+
+  /* Journal responsive */
+  .journal-header {
+    padding: 1rem 1.25rem;
+  }
+
+  .journal-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .period-selector {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .date-inputs {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .journal-date-input {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .journal-export-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .journal-tabs {
+    flex-direction: column;
+  }
+
+  .journal-tab {
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+
+  .journal-tab:last-child {
+    border-bottom: none;
+  }
+
+  .balance-accounts {
+    padding: 1rem;
+  }
+
+  .account-entry {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem 0.75rem;
+  }
+
+  .account-amount,
+  .account-count {
+    align-self: flex-end;
+  }
+
+  .ledger-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .ledger-section {
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .ledger-section:last-child {
+    border-bottom: none;
+  }
+
+  .statement-body {
+    padding: 1.25rem;
+  }
+
+  .statement-row {
+    flex-direction: column;
+    gap: 0.25rem;
+    text-align: left;
+  }
+
+  .line-value {
+    text-align: right;
+    font-size: 1.1rem;
   }
 
   /* Theme toggle position */

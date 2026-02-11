@@ -143,68 +143,66 @@ const Reports = () => {
   };
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h2>📊 Financial Reports</h2>
+    <div className="page-container journal-container">
+      <div className="page-header journal-header">
+        <h2>📊 Financial Journal & Reports</h2>
         <p className="page-subtitle">Comprehensive financial analysis and reporting</p>
       </div>
 
       {/* Date Range Filter */}
-      <div className="card mb-6">
-        <div className="card-body">
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-gray-600" />
-              <span className="font-medium">Date Range:</span>
-            </div>
-            <div className="flex items-center gap-2">
+      <div className="journal-controls">
+        <div className="journal-period">
+          <div className="period-selector">
+            <Calendar className="period-icon" />
+            <span className="period-label">Reporting Period:</span>
+            <div className="date-inputs">
               <input
                 type="date"
                 value={dateRange.startDate}
                 onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
-                className="input input-sm"
+                className="journal-date-input"
               />
-              <span>to</span>
+              <span className="date-separator">to</span>
               <input
                 type="date"
                 value={dateRange.endDate}
                 onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))}
-                className="input input-sm"
+                className="journal-date-input"
               />
             </div>
             <button
               onClick={() => exportReport('csv')}
-              className="btn btn-sm btn-outline"
+              className="journal-export-btn"
             >
-              <Download className="w-4 h-4 mr-2" />
-              Export CSV
+              <Download className="export-icon" />
+              Export Ledger
             </button>
           </div>
         </div>
       </div>
 
       {/* Report Tabs */}
-      <div className="tabs mb-6">
+      <div className="journal-tabs">
         <button
-          className={`tab ${activeTab === 'summary' ? 'tab-active' : ''}`}
+          className={`journal-tab ${activeTab === 'summary' ? 'journal-tab-active' : ''}`}
           onClick={() => setActiveTab('summary')}
         >
-          <BarChart3 className="w-4 h-4 mr-2" />
-          Summary
+          <BarChart3 className="tab-icon" />
+          Trial Balance
         </button>
         <button
-          className={`tab ${activeTab === 'categories' ? 'tab-active' : ''}`}
+          className={`journal-tab ${activeTab === 'categories' ? 'journal-tab-active' : ''}`}
           onClick={() => setActiveTab('categories')}
         >
-          <PieChart className="w-4 h-4 mr-2" />
-          Categories
+          <PieChart className="tab-icon" />
+          General Ledger
         </button>
         <button
-          className={`tab ${activeTab === 'detailed' ? 'tab-active' : ''}`}
+          className={`journal-tab ${activeTab === 'detailed' ? 'journal-tab-active' : ''}`}
           onClick={() => setActiveTab('detailed')}
         >
-          <FileText className="w-4 h-4 mr-2" />
-          Detailed
+          <FileText className="tab-icon" />
+          Financial Statement
         </button>
       </div>
 
@@ -212,44 +210,50 @@ const Reports = () => {
 
       {/* Summary Tab */}
       {activeTab === 'summary' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-          <div className="stats-card bg-green-50 border-green-200">
-            <div className="stats-icon bg-green-100 text-green-600">
-              <TrendingUp className="w-6 h-6" />
-            </div>
-            <div className="stats-content">
-              <h3 className="stats-title text-green-700">Total Income</h3>
-              <p className="stats-value text-green-800">{formatCurrency(reportData.summary.totalIncome)}</p>
-            </div>
+        <div className="journal-balance-sheet">
+          <div className="balance-sheet-header">
+            <h3>Trial Balance Summary</h3>
+            <p className="balance-period">Period: {dateRange.startDate} to {dateRange.endDate}</p>
           </div>
-          
-          <div className="stats-card bg-red-50 border-red-200">
-            <div className="stats-icon bg-red-100 text-red-600">
-              <TrendingUp className="w-6 h-6 rotate-180" />
+          <div className="balance-accounts">
+            <div className="account-entry debit-entry">
+              <div className="account-header">
+                <TrendingUp className="account-icon" />
+                <span className="account-name">Total Revenue</span>
+              </div>
+              <div className="account-amount credit-amount">
+                {formatCurrency(reportData.summary.totalIncome)}
+              </div>
             </div>
-            <div className="stats-content">
-              <h3 className="stats-title text-red-700">Total Expenses</h3>
-              <p className="stats-value text-red-800">{formatCurrency(reportData.summary.totalExpenses)}</p>
+            
+            <div className="account-entry credit-entry">
+              <div className="account-header">
+                <TrendingUp className="account-icon expense-icon" />
+                <span className="account-name">Total Expenses</span>
+              </div>
+              <div className="account-amount debit-amount">
+                {formatCurrency(reportData.summary.totalExpenses)}
+              </div>
             </div>
-          </div>
-          
-          <div className={`stats-card ${reportData.summary.netIncome >= 0 ? 'bg-blue-50 border-blue-200' : 'bg-orange-50 border-orange-200'}`}>
-            <div className={`stats-icon ${reportData.summary.netIncome >= 0 ? 'bg-blue-100 text-blue-600' : 'bg-orange-100 text-orange-600'}`}>
-              <DollarSign className="w-6 h-6" />
+            
+            <div className="account-entry balance-entry">
+              <div className="account-header">
+                <DollarSign className="account-icon" />
+                <span className="account-name">Net Income (Loss)</span>
+              </div>
+              <div className={`account-amount ${reportData.summary.netIncome >= 0 ? 'credit-amount' : 'debit-amount'}`}>
+                {formatCurrency(reportData.summary.netIncome)}
+              </div>
             </div>
-            <div className="stats-content">
-              <h3 className={`stats-title ${reportData.summary.netIncome >= 0 ? 'text-blue-700' : 'text-orange-700'}`}>Net Income</h3>
-              <p className={`stats-value ${reportData.summary.netIncome >= 0 ? 'text-blue-800' : 'text-orange-800'}`}>{formatCurrency(reportData.summary.netIncome)}</p>
-            </div>
-          </div>
-          
-          <div className="stats-card bg-purple-50 border-purple-200">
-            <div className="stats-icon bg-purple-100 text-purple-600">
-              <FileText className="w-6 h-6" />
-            </div>
-            <div className="stats-content">
-              <h3 className="stats-title text-purple-700">Total Transactions</h3>
-              <p className="stats-value text-purple-800">{reportData.summary.transactionCount}</p>
+            
+            <div className="account-entry info-entry">
+              <div className="account-header">
+                <FileText className="account-icon" />
+                <span className="account-name">Total Transactions</span>
+              </div>
+              <div className="account-count">
+                {reportData.summary.transactionCount} entries
+              </div>
             </div>
           </div>
         </div>
@@ -257,52 +261,57 @@ const Reports = () => {
 
       {/* Categories Tab */}
       {activeTab === 'categories' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Income Categories */}
-          <div className="card">
-            <div className="card-header">
-              <h3 className="card-title text-green-600">Income by Category</h3>
-            </div>
-            <div className="card-body">
-              {reportData.categoryBreakdown.income.length > 0 ? (
-                <div className="space-y-3">
-                  {reportData.categoryBreakdown.income.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                      <span className="font-medium">{item.category}</span>
-                      <div className="text-right">
-                        <div className="font-semibold text-green-600">{formatCurrency(item.amount)}</div>
-                        <div className="text-sm text-gray-500">{item.percentage}%</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-gray-500">No income data for selected period</p>
-              )}
-            </div>
+        <div className="journal-ledger">
+          <div className="ledger-header">
+            <h3>General Ledger - Account Summary</h3>
           </div>
-
-          {/* Expense Categories */}
-          <div className="card">
-            <div className="card-header">
-              <h3 className="card-title text-red-600">Expenses by Category</h3>
-            </div>
-            <div className="card-body">
-              {reportData.categoryBreakdown.expenses.length > 0 ? (
-                <div className="space-y-3">
-                  {reportData.categoryBreakdown.expenses.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
-                      <span className="font-medium">{item.category}</span>
-                      <div className="text-right">
-                        <div className="font-semibold text-red-600">{formatCurrency(item.amount)}</div>
-                        <div className="text-sm text-gray-500">{item.percentage}%</div>
+          <div className="ledger-columns">
+            {/* Income Ledger */}
+            <div className="ledger-section">
+              <div className="ledger-section-header credit-header">
+                <h4>Revenue Accounts</h4>
+              </div>
+              <div className="ledger-entries">
+                {reportData.categoryBreakdown.income.length > 0 ? (
+                  reportData.categoryBreakdown.income.map((item, index) => (
+                    <div key={index} className="ledger-entry credit-entry">
+                      <div className="entry-details">
+                        <span className="account-name">{item.category}</span>
+                        <span className="account-percentage">{item.percentage}%</span>
+                      </div>
+                      <div className="entry-amount credit-amount">
+                        {formatCurrency(item.amount)}
                       </div>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-gray-500">No expense data for selected period</p>
-              )}
+                  ))
+                ) : (
+                  <div className="no-entries">No revenue entries for selected period</div>
+                )}
+              </div>
+            </div>
+
+            {/* Expense Ledger */}
+            <div className="ledger-section">
+              <div className="ledger-section-header debit-header">
+                <h4>Expense Accounts</h4>
+              </div>
+              <div className="ledger-entries">
+                {reportData.categoryBreakdown.expenses.length > 0 ? (
+                  reportData.categoryBreakdown.expenses.map((item, index) => (
+                    <div key={index} className="ledger-entry debit-entry">
+                      <div className="entry-details">
+                        <span className="account-name">{item.category}</span>
+                        <span className="account-percentage">{item.percentage}%</span>
+                      </div>
+                      <div className="entry-amount debit-amount">
+                        {formatCurrency(item.amount)}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="no-entries">No expense entries for selected period</div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -310,44 +319,59 @@ const Reports = () => {
 
       {/* Detailed Tab */}
       {activeTab === 'detailed' && (
-        <div className="card">
-          <div className="card-header">
-            <h3 className="card-title">Detailed Financial Report</h3>
+        <div className="financial-statement">
+          <div className="statement-header">
+            <h3>Financial Statement</h3>
+            <p className="statement-period">For the Period Ended {dateRange.endDate}</p>
           </div>
-          <div className="card-body">
-            <div className="space-y-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <h4 className="font-semibold mb-2">Report Summary</h4>
-                <p><strong>Period:</strong> {dateRange.startDate} to {dateRange.endDate}</p>
-                <p><strong>Total Income:</strong> {formatCurrency(reportData.summary.totalIncome)}</p>
-                <p><strong>Total Expenses:</strong> {formatCurrency(reportData.summary.totalExpenses)}</p>
-                <p><strong>Net Result:</strong> 
-                  <span className={reportData.summary.netIncome >= 0 ? 'text-green-600' : 'text-red-600'}>
+          <div className="statement-body">
+            <div className="statement-section">
+              <div className="section-title">Financial Position Summary</div>
+              <div className="statement-grid">
+                <div className="statement-row">
+                  <span className="line-item">Reporting Period:</span>
+                  <span className="line-value">{dateRange.startDate} to {dateRange.endDate}</span>
+                </div>
+                <div className="statement-row">
+                  <span className="line-item">Total Revenue:</span>
+                  <span className="line-value credit-value">{formatCurrency(reportData.summary.totalIncome)}</span>
+                </div>
+                <div className="statement-row">
+                  <span className="line-item">Total Expenses:</span>
+                  <span className="line-value debit-value">{formatCurrency(reportData.summary.totalExpenses)}</span>
+                </div>
+                <div className="statement-separator"></div>
+                <div className="statement-row total-row">
+                  <span className="line-item">Net Income (Loss):</span>
+                  <span className={`line-value ${reportData.summary.netIncome >= 0 ? 'credit-value' : 'debit-value'}`}>
                     {formatCurrency(reportData.summary.netIncome)}
                   </span>
-                </p>
-                <p><strong>Savings Rate:</strong> 
-                  {reportData.summary.totalIncome > 0 ? 
-                    `${((reportData.summary.netIncome / reportData.summary.totalIncome) * 100).toFixed(1)}%` : 
-                    'N/A'
-                  }
-                </p>
+                </div>
+                <div className="statement-row">
+                  <span className="line-item">Savings Rate:</span>
+                  <span className="line-value">
+                    {reportData.summary.totalIncome > 0 ? 
+                      `${((reportData.summary.netIncome / reportData.summary.totalIncome) * 100).toFixed(1)}%` : 
+                      'N/A'
+                    }
+                  </span>
+                </div>
               </div>
-              
-              {reportData.summary.netIncome > 0 && (
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <h4 className="font-semibold text-green-700 mb-2">🎉 Great job!</h4>
-                  <p className="text-green-700">You have a positive net income for this period. Keep up the good work!</p>
-                </div>
-              )}
-              
-              {reportData.summary.netIncome < 0 && (
-                <div className="p-4 bg-red-50 rounded-lg">
-                  <h4 className="font-semibold text-red-700 mb-2">⚠️ Budget Alert</h4>
-                  <p className="text-red-700">Your expenses exceeded your income this period. Consider reviewing your spending habits.</p>
-                </div>
-              )}
             </div>
+            
+            {reportData.summary.netIncome > 0 && (
+              <div className="statement-note positive-note">
+                <div className="note-header">📈 Positive Performance</div>
+                <p>The entity shows a positive net income for this period, indicating profitable operations and effective financial management.</p>
+              </div>
+            )}
+            
+            {reportData.summary.netIncome < 0 && (
+              <div className="statement-note negative-note">
+                <div className="note-header">⚠️ Performance Alert</div>
+                <p>The entity shows a net loss for this period. Management should review expense allocations and revenue strategies.</p>
+              </div>
+            )}
           </div>
         </div>
       )}
