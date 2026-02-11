@@ -164,19 +164,19 @@ const Expenses = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h2>Expenses</h2>
+        <h2>💸 Expenses</h2>
         <button 
           className="btn btn-primary" 
           onClick={() => setShowModal(true)}
         >
-          <Plus size={20} /> Add Expense
+          <Plus size={20} /> <span className="btn-text">Add Expense</span>
         </button>
       </div>
 
       <div className="card">
         <div className="card-header">
           <div className="card-header-content">
-            <h3>Expense History</h3>
+            <h3>💳 Expense History</h3>
             <div className="balance-display">
               <span className="balance-label">Total Expenses:</span>
               <span className="balance-amount expense-amount">{formatCurrency(calculateTotalExpenses())}</span>
@@ -185,8 +185,8 @@ const Expenses = () => {
         </div>
         <div className="card-body">
           {/* Filters */}
-          <div className="form-row mb-3">
-            <div className="form-group">
+          <div className="filters-container">
+            <div className="filter-group">
               <div className="search-input">
                 <Search size={20} />
                 <input
@@ -198,7 +198,7 @@ const Expenses = () => {
                 />
               </div>
             </div>
-            <div className="form-group">
+            <div className="filter-group">
               <select
                 className="form-control"
                 value={filterCategory}
@@ -214,8 +214,8 @@ const Expenses = () => {
             </div>
           </div>
 
-          {/* Table */}
-          <div className="table-responsive">
+          {/* Desktop Table */}
+          <div className="table-responsive desktop-only">
             <table className="table">
               <thead>
                 <tr>
@@ -270,15 +270,56 @@ const Expenses = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Mobile Cards */}
+          <div className="mobile-cards mobile-only">
+            {filteredExpenses.length > 0 ? (
+              filteredExpenses.map((expense) => (
+                <div key={expense.id} className="expense-card">
+                  <div className="expense-card-header">
+                    <div className="expense-date">{formatDate(expense.date)}</div>
+                    <div className="expense-amount">{formatCurrency(expense.amount)}</div>
+                  </div>
+                  <div className="expense-card-body">
+                    <div className="expense-description">{expense.description}</div>
+                    <div className="expense-details">
+                      <span className="category-badge expense">{expense.category}</span>
+                      <span className="payment-method">{expense.payment_method}</span>
+                    </div>
+                  </div>
+                  <div className="expense-card-actions">
+                    <button 
+                      className="btn-icon btn-edit"
+                      onClick={() => handleEdit(expense)}
+                      title="Edit"
+                    >
+                      <Edit2 size={16} />
+                    </button>
+                    <button 
+                      className="btn-icon btn-delete"
+                      onClick={() => handleDelete(expense.id)}
+                      title="Delete"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="empty-state">
+                <p>No expense records found</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
+          <div className="modal responsive-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>{editingExpense ? 'Edit Expense' : 'Add Expense'}</h3>
+              <h3>{editingExpense ? '✏️ Edit Expense' : '➕ Add Expense'}</h3>
               <button 
                 className="modal-close" 
                 onClick={() => setShowModal(false)}
@@ -288,9 +329,9 @@ const Expenses = () => {
             </div>
             <form onSubmit={handleSubmit}>
               <div className="modal-body">
-                <div className="form-row">
+                <div className="form-grid">
                   <div className="form-group">
-                    <label>Date</label>
+                    <label>📅 Date</label>
                     <input
                       type="date"
                       className="form-control"
@@ -300,7 +341,7 @@ const Expenses = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Category</label>
+                    <label>🏷️ Category</label>
                     <select
                       className="form-control"
                       value={formData.category}
@@ -317,7 +358,7 @@ const Expenses = () => {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label>Description</label>
+                  <label>📝 Description</label>
                   <input
                     type="text"
                     className="form-control"
@@ -327,9 +368,9 @@ const Expenses = () => {
                     required
                   />
                 </div>
-                <div className="form-row">
+                <div className="form-grid">
                   <div className="form-group">
-                    <label>Payment Method</label>
+                    <label>💳 Payment Method</label>
                     <select
                       className="form-control"
                       value={formData.paymentMethod}
@@ -345,7 +386,7 @@ const Expenses = () => {
                     </select>
                   </div>
                   <div className="form-group">
-                    <label>Amount (Rs.)</label>
+                    <label>💰 Amount (Rs.)</label>
                     <input
                       type="number"
                       className="form-control"

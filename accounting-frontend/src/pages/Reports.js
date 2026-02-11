@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { FileText, Download, Calendar, DollarSign, TrendingUp, PieChart, BarChart3, Filter } from 'lucide-react';
-import { dashboardAPI, expensesAPI, incomeAPI, budgetsAPI } from '../services/api';
+import React, { useState, useEffect, useCallback } from 'react';
+import { FileText, Download, Calendar, DollarSign, TrendingUp, PieChart, BarChart3 } from 'lucide-react';
+import { expensesAPI, incomeAPI } from '../services/api';
 import toast from 'react-hot-toast';
 
 const Reports = () => {
@@ -26,11 +26,8 @@ const Reports = () => {
 
   const [activeTab, setActiveTab] = useState('summary');
 
-  useEffect(() => {
-    loadReportData();
-  }, [dateRange]);
 
-  const loadReportData = async () => {
+  const loadReportData = useCallback(async () => {
     setLoading(true);
     try {
       // Load expenses and income data
@@ -103,7 +100,11 @@ const Reports = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [dateRange]);
+
+  useEffect(() => {
+    loadReportData();
+  }, [loadReportData]);
 
   const exportReport = (format) => {
     // Basic CSV export functionality
