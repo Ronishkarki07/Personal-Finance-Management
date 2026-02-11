@@ -53,11 +53,19 @@ const Sidebar = ({ collapsed, onToggle, mobileOpen, onMobileToggle }) => {
         <div className="sidebar-header">
           <h1 className="logo">
             <span className="logo-icon">💰</span>
-            {!collapsed && <span className="logo-text">My Finance</span>}
+            {!collapsed && !isMobile && <span className="logo-text">My Finance</span>}
+            {isMobile && !collapsed && <span className="logo-text">My Finance</span>}
           </h1>
-          <button className="sidebar-toggle" onClick={isMobile ? onMobileToggle : onToggle}>
-            {isMobile && mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          {!isMobile && (
+            <button className="sidebar-toggle" onClick={onToggle}>
+              <Menu size={20} />
+            </button>
+          )}
+          {isMobile && mobileOpen && (
+            <button className="sidebar-toggle mobile-close" onClick={onMobileToggle}>
+              <X size={20} />
+            </button>
+          )}
         </div>
 
         <nav className="sidebar-nav">

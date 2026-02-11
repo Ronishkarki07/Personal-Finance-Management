@@ -372,6 +372,24 @@ body {
   color: var(--text-primary);
 }
 
+/* Mobile close button */
+.mobile-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--bg-tertiary);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-close:hover {
+  background: var(--border-color);
+}
+
 .sidebar-nav {
   padding: 1rem 0;
   flex: 1;
@@ -1848,7 +1866,7 @@ body {
   border-radius: 0.5rem;
   width: 48px;
   height: 48px;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -1927,7 +1945,7 @@ body {
 
 /* Mobile and Small Tablets: up to 768px */
 @media (max-width: 768px) {
-  /* Hide mobile menu toggle on desktop */
+  /* Show mobile menu toggle on mobile */
   .mobile-menu-toggle {
     display: flex;
   }
@@ -1952,6 +1970,12 @@ body {
   .main-content {
     margin-left: 0;
     padding: 5rem 1rem 1rem 1rem; /* Top padding for mobile menu toggle */
+    width: 100%;
+  }
+
+  .app.sidebar-collapsed .main-content {
+    margin-left: 0;
+    width: 100%;
   }
   
   /* Page header responsive */
@@ -1964,6 +1988,20 @@ body {
   
   .page-header h2 {
     font-size: 1.75rem;
+  }
+
+  /* Sidebar mobile adjustments */
+  .sidebar-header {
+    position: relative;
+    padding: 1.25rem;
+  }
+
+  .sidebar-header .logo {
+    flex: 1;
+  }
+
+  .sidebar-header .logo-text {
+    font-size: 1.25rem;
   }
   
   /* Dashboard responsive */
@@ -2266,7 +2304,7 @@ body {
 /* Hide mobile menu toggle on desktop */
 @media (min-width: 769px) {
   .mobile-menu-toggle {
-    display: none;
+    display: none !important;
   }
   
   .sidebar {
