@@ -76,12 +76,4 @@ export const budgetsAPI = {
   deleteBudget: (id) => apiClient.delete(`/budgets?id=${id}`),
 };
 
-// Goals API
-export const goalsAPI = {
-  getGoals: () => apiClient.get('/goals'),
-  createGoal: (goal) => apiClient.post('/goals', goal),
-  updateGoal: (goal) => apiClient.put('/goals', goal),
-  deleteGoal: (id) => apiClient.delete(`/goals?id=${id}`),
-};
-
 export default apiClient;

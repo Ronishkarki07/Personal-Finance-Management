@@ -7,7 +7,6 @@ import {
   Calendar, 
   Tag, 
   PieChart, 
-  Target, 
   FileText,
   Menu,
   X
@@ -34,7 +33,6 @@ const Sidebar = ({ collapsed, onToggle, mobileOpen, onMobileToggle }) => {
     { path: '/monthly-view', icon: Calendar, text: 'Monthly View', emoji: '📅' },
     { path: '/categories', icon: Tag, text: 'Categories', emoji: '🏷️' },
     { path: '/budget', icon: PieChart, text: 'Budget', emoji: '📈' },
-    { path: '/goals', icon: Target, text: 'Goals', emoji: '🎯' },
     { path: '/reports', icon: FileText, text: 'Reports', emoji: '📋' },
   ];
 

@@ -9,7 +9,6 @@ import Expenses from './pages/Expenses';
 import MonthlyView from './pages/MonthlyView';
 import Categories from './pages/Categories';
 import Budget from './pages/Budget';
-import Goals from './pages/Goals';
 import Reports from './pages/Reports';
 import './App.css';
 
@@ -103,7 +102,6 @@ function App() {
             <Route path="/monthly-view" element={<MonthlyView />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/budget" element={<Budget />} />
-            <Route path="/goals" element={<Goals />} />
             <Route path="/reports" element={<Reports />} />
           </Routes>
         </main>
