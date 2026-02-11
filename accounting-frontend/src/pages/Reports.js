@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FileText, Download, Calendar, DollarSign, TrendingUp, PieChart, BarChart3 } from 'lucide-react';
+import { FileText, Download, Calendar, DollarSign, TrendingUp, PieChart, BarChart3, X, Eye } from 'lucide-react';
 import { expensesAPI, incomeAPI } from '../services/api';
 import toast from 'react-hot-toast';
 
@@ -21,10 +21,15 @@ const Reports = () => {
       income: [],
       expenses: []
     },
+    transactions: {
+      income: [],
+      expenses: []
+    },
     monthlyTrends: []
   });
 
   const [activeTab, setActiveTab] = useState('summary');
+  const [showTransactionList, setShowTransactionList] = useState(false);
 
 
   const loadReportData = useCallback(async () => {
@@ -91,6 +96,10 @@ const Reports = () => {
           income: incomeCategoryBreakdown,
           expenses: expenseCategoryBreakdown
         },
+        transactions: {
+          income: filteredIncome,
+          expenses: filteredExpenses
+        },
         monthlyTrends: [] // Could be implemented for more advanced reporting
       });
 
@@ -140,6 +149,18 @@ const Reports = () => {
       style: 'currency',
       currency: 'USD'
     }).format(amount);
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const handleShowTransactions = () => {
+    setShowTransactionList(true);
   };
 
   return (
@@ -246,10 +267,11 @@ const Reports = () => {
               </div>
             </div>
             
-            <div className="account-entry info-entry">
+            <div className="account-entry info-entry clickable-entry" onClick={handleShowTransactions}>
               <div className="account-header">
                 <FileText className="account-icon" />
                 <span className="account-name">Total Transactions</span>
+                <Eye className="view-icon" />
               </div>
               <div className="account-count">
                 {reportData.summary.transactionCount} entries
@@ -372,6 +394,93 @@ const Reports = () => {
                 <p>The entity shows a net loss for this period. Management should review expense allocations and revenue strategies.</p>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Transaction List Modal */}
+      {showTransactionList && (
+        <div className="transaction-modal-overlay" onClick={() => setShowTransactionList(false)}>
+          <div className="transaction-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="transaction-modal-header">
+              <h3>📋 Transaction Journal</h3>
+              <p className="modal-subtitle">Period: {dateRange.startDate} to {dateRange.endDate}</p>
+              <button 
+                className="modal-close-btn" 
+                onClick={() => setShowTransactionList(false)}
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="transaction-modal-body">
+              {/* Income Transactions */}
+              {reportData.transactions.income.length > 0 && (
+                <div className="transaction-section">
+                  <div className="transaction-section-header income-header">
+                    <h4>💰 Income Transactions</h4>
+                    <span className="transaction-count">{reportData.transactions.income.length} entries</span>
+                  </div>
+                  <div className="transaction-list">
+                    {reportData.transactions.income.map((transaction, index) => (
+                      <div key={`income-${index}`} className="transaction-entry income-transaction">
+                        <div className="transaction-date">{formatDate(transaction.date)}</div>
+                        <div className="transaction-category">{transaction.category}</div>
+                        <div className="transaction-description">{transaction.description}</div>
+                        <div className="transaction-amount credit-amount">
+                          +{formatCurrency(transaction.amount)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Expense Transactions */}
+              {reportData.transactions.expenses.length > 0 && (
+                <div className="transaction-section">
+                  <div className="transaction-section-header expense-header">
+                    <h4>💸 Expense Transactions</h4>
+                    <span className="transaction-count">{reportData.transactions.expenses.length} entries</span>
+                  </div>
+                  <div className="transaction-list">
+                    {reportData.transactions.expenses.map((transaction, index) => (
+                      <div key={`expense-${index}`} className="transaction-entry expense-transaction">
+                        <div className="transaction-date">{formatDate(transaction.date)}</div>
+                        <div className="transaction-category">{transaction.category}</div>
+                        <div className="transaction-description">{transaction.description}</div>
+                        <div className="transaction-amount debit-amount">
+                          -{formatCurrency(transaction.amount)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {reportData.summary.transactionCount === 0 && (
+                <div className="no-transactions">
+                  <p>No transactions found for the selected period.</p>
+                </div>
+              )}
+            </div>
+
+            <div className="transaction-modal-footer">
+              <div className="modal-summary">
+                <span className="summary-item">
+                  <strong>Total Income:</strong> {formatCurrency(reportData.summary.totalIncome)}
+                </span>
+                <span className="summary-item">
+                  <strong>Total Expenses:</strong> {formatCurrency(reportData.summary.totalExpenses)}
+                </span>
+                <span className="summary-item">
+                  <strong>Net:</strong> 
+                  <span className={reportData.summary.netIncome >= 0 ? 'credit-amount' : 'debit-amount'}>
+                    {formatCurrency(reportData.summary.netIncome)}
+                  </span>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       )}
