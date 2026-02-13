@@ -47,9 +47,20 @@ const Dashboard = () => {
     });
   };
 
+  const incomeTotal = dashboardData.currentMonth.income;
+  const expenseTotal = dashboardData.currentMonth.expenses;
+  const balanceTotal = dashboardData.currentMonth.balance;
+  const topExpenseCategory = dashboardData.expenseCategories.length
+    ? [...dashboardData.expenseCategories].sort((a, b) => b.total - a.total)[0]
+    : null;
+  const topIncomeCategory = dashboardData.incomeCategories.length
+    ? [...dashboardData.incomeCategories].sort((a, b) => b.total - a.total)[0]
+    : null;
+  const savingsRate = incomeTotal > 0 ? Math.round((balanceTotal / incomeTotal) * 100) : null;
+
   if (loading) {
     return (
-      <div className="page-container">
+      <div className="page-container dashboard-page">
         <div className="page-header">
           <h2>Dashboard</h2>
         </div>
@@ -59,10 +70,56 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h2>Dashboard</h2>
-        <p className="page-subtitle">Overview of your financial activity</p>
+    <div className="page-container dashboard-page">
+      <div className="dashboard-hero">
+        <div className="hero-left">
+          <div className="hero-kicker">Financial Overview</div>
+          <h2>Dashboard</h2>
+          <p className="page-subtitle">Overview of your financial activity</p>
+          <div className="hero-badges">
+            <span className="badge">This month</span>
+            {topExpenseCategory && (
+              <span className="badge badge-muted">Top expense: {topExpenseCategory.name}</span>
+            )}
+          </div>
+        </div>
+        <div className="hero-right">
+          <div className={`hero-balance ${balanceTotal >= 0 ? 'positive' : 'negative'}`}>
+            <span className="hero-balance-label">Net balance</span>
+            <span className="hero-balance-value">{formatCurrency(balanceTotal)}</span>
+            <span className="hero-balance-meta">
+              Income {formatCurrency(incomeTotal)} - Expenses {formatCurrency(expenseTotal)}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="insight-grid">
+        <div className="insight-card">
+          <span className="insight-label">Top Expense</span>
+          <span className="insight-value">
+            {topExpenseCategory ? topExpenseCategory.name : 'No data'}
+          </span>
+          <span className="insight-meta">
+            {topExpenseCategory ? formatCurrency(topExpenseCategory.total) : 'Add expenses to see trends'}
+          </span>
+        </div>
+        <div className="insight-card">
+          <span className="insight-label">Top Income</span>
+          <span className="insight-value">
+            {topIncomeCategory ? topIncomeCategory.name : 'No data'}
+          </span>
+          <span className="insight-meta">
+            {topIncomeCategory ? formatCurrency(topIncomeCategory.total) : 'Add income to see trends'}
+          </span>
+        </div>
+        <div className="insight-card">
+          <span className="insight-label">Savings Rate</span>
+          <span className="insight-value">
+            {savingsRate !== null ? `${savingsRate}%` : 'N/A'}
+          </span>
+          <span className="insight-meta">Based on current month balance</span>
+        </div>
       </div>
 
       {/* Summary Cards */}
@@ -73,7 +130,7 @@ const Dashboard = () => {
           </div>
           <div className="stat-content">
             <h3>This Month's Income</h3>
-            <p className="stat-value">{formatCurrency(dashboardData.currentMonth.income)}</p>
+            <p className="stat-value">{formatCurrency(incomeTotal)}</p>
           </div>
         </div>
 
@@ -83,17 +140,17 @@ const Dashboard = () => {
           </div>
           <div className="stat-content">
             <h3>This Month's Expenses</h3>
-            <p className="stat-value">{formatCurrency(dashboardData.currentMonth.expenses)}</p>
+            <p className="stat-value">{formatCurrency(expenseTotal)}</p>
           </div>
         </div>
 
-        <div className={`stat-card ${dashboardData.currentMonth.balance >= 0 ? 'positive' : 'negative'}`}>
+        <div className={`stat-card ${balanceTotal >= 0 ? 'positive' : 'negative'}`}>
           <div className="stat-icon">
-            {dashboardData.currentMonth.balance >= 0 ? <TrendingUp size={24} /> : <TrendingDown size={24} />}
+            {balanceTotal >= 0 ? <TrendingUp size={24} /> : <TrendingDown size={24} />}
           </div>
           <div className="stat-content">
             <h3>Balance</h3>
-            <p className="stat-value">{formatCurrency(dashboardData.currentMonth.balance)}</p>
+            <p className="stat-value">{formatCurrency(balanceTotal)}</p>
           </div>
         </div>
       </div>
@@ -101,7 +158,7 @@ const Dashboard = () => {
       <div className="dashboard-content">
         {/* Charts */}
         <div className="dashboard-charts">
-          <div className="card">
+          <div className="card dashboard-card chart-card">
             <div className="card-header">
               <h3>Expense Categories</h3>
             </div>
@@ -115,7 +172,9 @@ const Dashboard = () => {
                       cy="50%"
                       labelLine={false}
                       label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                      outerRadius={80}
+                      innerRadius={55}
+                      outerRadius={95}
+                      paddingAngle={2}
                       fill="#8884d8"
                       dataKey="total"
                     >
@@ -132,7 +191,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="card">
+          <div className="card dashboard-card chart-card">
             <div className="card-header">
               <h3>Income vs Expenses</h3>
             </div>
@@ -142,18 +201,18 @@ const Dashboard = () => {
                   data={[
                     {
                       name: 'This Month',
-                      income: dashboardData.currentMonth.income,
-                      expenses: dashboardData.currentMonth.expenses
+                      income: incomeTotal,
+                      expenses: expenseTotal
                     }
                   ]}
                 >
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid strokeDasharray="4 6" />
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip formatter={(value) => formatCurrency(value)} />
                   <Legend />
-                  <Bar dataKey="income" fill="#43e97b" />
-                  <Bar dataKey="expenses" fill="#f5576c" />
+                  <Bar dataKey="income" fill="#43e97b" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="expenses" fill="#f5576c" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -161,7 +220,7 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Transactions */}
-        <div className="card">
+        <div className="card dashboard-card transaction-card">
           <div className="card-header">
             <h3><Activity size={20} /> Recent Transactions</h3>
           </div>
