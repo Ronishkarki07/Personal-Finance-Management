@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 /* ==========================================
    Personal Finance Manager - React App CSS
    Modern React 18+ Patterns & Performance
@@ -636,6 +638,171 @@ body {
 }
 
 /* Dashboard Specific */
+.dashboard-page {
+  position: relative;
+  isolation: isolate;
+  font-family: 'Space Grotesk', 'Arial', sans-serif;
+}
+
+.dashboard-page::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: -20px;
+  right: -20px;
+  height: 220px;
+  background:
+    radial-gradient(120% 120% at 10% 10%, rgba(79, 172, 254, 0.25), transparent 60%),
+    radial-gradient(120% 120% at 90% 0%, rgba(245, 87, 108, 0.2), transparent 55%),
+    linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(240, 147, 251, 0.1));
+  border-radius: 24px;
+  z-index: -1;
+}
+
+.dashboard-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.75));
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 2rem;
+  animation: dashboard-fade-in 0.5s ease both;
+}
+
+.dashboard-hero h2 {
+  font-family: 'Fraunces', 'Times New Roman', serif;
+  font-size: 2.25rem;
+  letter-spacing: 0.2px;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hero-kicker {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hero-badges .badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(79, 172, 254, 0.12);
+  color: var(--text-primary);
+  border: 1px solid rgba(79, 172, 254, 0.25);
+}
+
+.hero-badges .badge-muted {
+  background: rgba(102, 126, 234, 0.1);
+  border-color: rgba(102, 126, 234, 0.2);
+  color: var(--text-secondary);
+}
+
+.hero-right {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 260px;
+}
+
+.hero-balance {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  min-width: 240px;
+}
+
+.hero-balance.positive {
+  background: linear-gradient(135deg, rgba(67, 233, 123, 0.15), rgba(255, 255, 255, 0.8));
+  border-color: rgba(67, 233, 123, 0.25);
+}
+
+.hero-balance.negative {
+  background: linear-gradient(135deg, rgba(245, 87, 108, 0.18), rgba(255, 255, 255, 0.8));
+  border-color: rgba(245, 87, 108, 0.25);
+}
+
+.hero-balance-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.hero-balance-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.hero-balance-meta {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.insight-card {
+  padding: 1rem 1.25rem;
+  border-radius: 0.85rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  animation: dashboard-fade-in 0.6s ease both;
+}
+
+.insight-card:nth-child(2) { animation-delay: 0.05s; }
+.insight-card:nth-child(3) { animation-delay: 0.1s; }
+
+.insight-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.insight-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.insight-meta {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
 .dashboard-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -651,7 +818,14 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  animation: dashboard-fade-in 0.6s ease both;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
 }
 
 .stat-icon {
@@ -702,6 +876,40 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 2rem;
+}
+
+.dashboard-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), var(--bg-secondary));
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+}
+
+.dashboard-card .card-header {
+  background: linear-gradient(90deg, rgba(102, 126, 234, 0.08), rgba(79, 172, 254, 0.08));
+}
+
+.chart-card .card-body {
+  background: linear-gradient(180deg, rgba(248, 249, 250, 0.6), transparent);
+}
+
+.transaction-card .transaction-item {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.transaction-card .transaction-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+@keyframes dashboard-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Forms */
@@ -2005,6 +2213,31 @@ body {
   }
   
   /* Dashboard responsive */
+  .dashboard-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+  }
+
+  .hero-right {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .hero-balance {
+    width: 100%;
+  }
+
+  .insight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-page::before {
+    left: -10px;
+    right: -10px;
+    height: 180px;
+  }
+
   .dashboard-stats {
     grid-template-columns: 1fr;
     gap: 1rem;
