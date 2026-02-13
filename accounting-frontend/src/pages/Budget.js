@@ -160,7 +160,7 @@ const Budget = () => {
 
   if (loading) {
     return (
-      <div className="page-container">
+      <div className="page-container budget-page">
         <div className="page-header">
           <h2>Budget Management</h2>
         </div>
@@ -170,98 +170,130 @@ const Budget = () => {
   }
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h2>Budget Management</h2>
-        <button
-          className="btn btn-primary"
-          onClick={() => setShowModal(true)}
-        >
-          <Plus size={20} /> Set Budget
-        </button>
+    <div className="page-container budget-page">
+      <div className="budget-hero">
+        <div className="hero-left">
+          <div className="hero-kicker">Financial Planning</div>
+          <h2>Budget Management</h2>
+          <p className="page-subtitle">
+            Set budgets, track spending, and stay on top of your financial goals for {months.find(m => m.value === selectedMonth)?.label} {selectedYear}
+          </p>
+          <div className="hero-badges">
+            <span className="badge">{months.find(m => m.value === selectedMonth)?.label} {selectedYear}</span>
+            {budgets.length > 0 && (
+              <span className="badge badge-muted">{budgets.length} categories tracked</span>
+            )}
+          </div>
+        </div>
+        <div className="hero-right">
+          <div className={`hero-balance ${totalRemaining >= 0 ? 'positive' : 'negative'}`}>
+            <span className="hero-balance-label">Budget Health</span>
+            <span className="hero-balance-value">
+              {totalBudget > 0 ? `${overallPercentage.toFixed(1)}%` : 'No budgets'}
+            </span>
+            <span className="hero-balance-meta">
+              {totalBudget > 0 ? `${formatCurrency(totalRemaining)} remaining` : 'Set your first budget'}
+            </span>
+          </div>
+        </div>
       </div>
 
-      {/* Period Selector */}
-      <div className="card mb-4">
+      <div className="budget-insights">
+        <div className="insight-card">
+          <span className="insight-label">Total Budget</span>
+          <span className="insight-value">{formatCurrency(totalBudget)}</span>
+          <span className="insight-meta">Allocated for this month</span>
+        </div>
+        <div className="insight-card">
+          <span className="insight-label">Total Spent</span>
+          <span className="insight-value">{formatCurrency(totalSpent)}</span>
+          <span className="insight-meta">{totalBudget > 0 ? `${overallPercentage.toFixed(1)}% of budget` : 'No spending tracked'}</span>
+        </div>
+        <div className="insight-card">
+          <span className="insight-label">Remaining</span>
+          <span className="insight-value" style={{ color: totalRemaining >= 0 ? '#22c55e' : '#ef4444' }}>
+            {formatCurrency(totalRemaining)}
+          </span>
+          <span className="insight-meta">
+            {totalRemaining >= 0 ? 'Within budget' : 'Over budget'}
+          </span>
+        </div>
+      </div>
+
+      {/* Period Selector & Actions */}
+      <div className="card budget-controls">
         <div className="card-body">
-          <div className="form-row">
-            <div className="form-group">
-              <label>Month</label>
-              <select
-                className="form-control"
-                value={selectedMonth}
-                onChange={(e) => handlePeriodChange(parseInt(e.target.value), selectedYear)}
-              >
-                {months.map(month => (
-                  <option key={month.value} value={month.value}>
-                    {month.label}
-                  </option>
-                ))}
-              </select>
+          <div className="controls-grid">
+            <div className="period-selector">
+              <h4>Select Period</h4>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Month</label>
+                  <select
+                    className="form-control"
+                    value={selectedMonth}
+                    onChange={(e) => handlePeriodChange(parseInt(e.target.value), selectedYear)}
+                  >
+                    {months.map(month => (
+                      <option key={month.value} value={month.value}>
+                        {month.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Year</label>
+                  <select
+                    className="form-control"
+                    value={selectedYear}
+                    onChange={(e) => handlePeriodChange(selectedMonth, parseInt(e.target.value))}
+                  >
+                    {years.map(year => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
-            <div className="form-group">
-              <label>Year</label>
-              <select
-                className="form-control"
-                value={selectedYear}
-                onChange={(e) => handlePeriodChange(selectedMonth, parseInt(e.target.value))}
+            <div className="action-section">
+              <h4>Quick Actions</h4>
+              <button
+                className="btn btn-primary btn-large"
+                onClick={() => setShowModal(true)}
               >
-                {years.map(year => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
+                <Plus size={20} /> Set Budget
+              </button>
             </div>
           </div>
         </div>
       </div>
 
       {/* Budget Overview */}
-      <div className="card mb-4">
-        <div className="card-header">
-          <h3>Budget Overview - {months.find(m => m.value === selectedMonth)?.label} {selectedYear}</h3>
-        </div>
-        <div className="card-body">
-          <div className="budget-overview">
-            <div className="budget-stat">
-              <div className="stat-icon" style={{ color: '#3b82f6' }}>
-                <DollarSign size={24} />
-              </div>
-              <div className="stat-details">
-                <span className="stat-label">Total Budget</span>
-                <span className="stat-value">{formatCurrency(totalBudget)}</span>
-              </div>
-            </div>
-            <div className="budget-stat">
-              <div className="stat-icon" style={{ color: '#ef4444' }}>
-                <TrendingUp size={24} />
-              </div>
-              <div className="stat-details">
-                <span className="stat-label">Total Spent</span>
-                <span className="stat-value">{formatCurrency(totalSpent)}</span>
-              </div>
-            </div>
-            <div className="budget-stat">
-              <div className="stat-icon" style={{ color: totalRemaining >= 0 ? '#22c55e' : '#ef4444' }}>
-                <TrendingDown size={24} />
-              </div>
-              <div className="stat-details">
-                <span className="stat-label">Remaining</span>
-                <span className="stat-value" style={{ color: totalRemaining >= 0 ? '#22c55e' : '#ef4444' }}>
-                  {formatCurrency(totalRemaining)}
-                </span>
-              </div>
-            </div>
+      {totalBudget > 0 && (
+        <div className="card budget-overview-card">
+          <div className="card-header">
+            <h3>Monthly Progress</h3>
           </div>
-
-          {totalBudget > 0 && (
-            <div className="overall-progress mt-3">
-              <div className="progress-info">
-                <span>Overall Budget Progress</span>
-                <span>{overallPercentage.toFixed(1)}%</span>
+          <div className="card-body">
+            <div className="overall-progress">
+              <div className="progress-header">
+                <div className="progress-info">
+                  <span>Overall Budget Progress</span>
+                  <span className="progress-percentage">{overallPercentage.toFixed(1)}%</span>
+                </div>
+                <div className="progress-status">
+                  <span className={`status-badge ${
+                    overallPercentage <= 75 ? 'good' : 
+                    overallPercentage <= 90 ? 'warning' : 'danger'
+                  }`}>
+                    {overallPercentage <= 75 ? 'On Track' : 
+                     overallPercentage <= 90 ? 'Caution' : 'Over Budget'}
+                  </span>
+                </div>
               </div>
-              <div className="progress-bar">
+              <div className="progress-bar modern">
                 <div
                   className="progress-fill"
                   style={{
@@ -270,30 +302,53 @@ const Budget = () => {
                   }}
                 />
               </div>
+              <div className="progress-details">
+                <div className="detail-item">
+                  <span className="detail-label">Spent</span>
+                  <span className="detail-value">{formatCurrency(totalSpent)}</span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-label">Budget</span>
+                  <span className="detail-value">{formatCurrency(totalBudget)}</span>
+                </div>
+              </div>
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Budget List */}
-      <div className="card">
+      <div className="card budget-list-card">
         <div className="card-header">
           <h3>Category Budgets</h3>
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={() => setShowModal(true)}
+          >
+            <Plus size={16} /> Add Budget
+          </button>
         </div>
         <div className="card-body">
           {budgets.length > 0 ? (
-            <div className="budget-grid">
+            <div className="budget-grid modern">
               {budgets.map((budget) => {
                 const status = getBudgetStatus(budget);
                 const StatusIcon = status.icon;
 
                 return (
-                  <div key={budget.id} className="budget-card">
+                  <div key={budget.id} className="budget-card modern">
                     <div className="budget-card-header">
                       <div className="budget-category">
-                        <span className="category-name">{budget.category}</span>
-                        <div className="budget-status" style={{ color: status.color }}>
-                          <StatusIcon size={16} />
+                        <div className="category-info">
+                          <span className="category-name">{budget.category}</span>
+                          <div className="budget-status" style={{ color: status.color }}>
+                            <StatusIcon size={16} />
+                            <span className="status-text">
+                              {status.status === 'over' ? 'Over Budget' :
+                               status.status === 'warning' ? 'Near Limit' :
+                               status.status === 'caution' ? 'Caution' : 'On Track'}
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div className="budget-actions">
@@ -314,7 +369,7 @@ const Budget = () => {
                       </div>
                     </div>
 
-                    <div className="budget-amounts">
+                    <div className="budget-amounts modern">
                       <div className="amount-row">
                         <span>Budgeted:</span>
                         <span className="amount-budgeted">{formatCurrency(budget.budget_amount)}</span>
@@ -323,7 +378,7 @@ const Budget = () => {
                         <span>Spent:</span>
                         <span className="amount-spent">{formatCurrency(budget.spent_amount)}</span>
                       </div>
-                      <div className="amount-row">
+                      <div className="amount-row highlight">
                         <span>Remaining:</span>
                         <span
                           className={`amount-remaining ${budget.remaining_amount < 0 ? 'over-budget' : ''}`}
@@ -333,9 +388,10 @@ const Budget = () => {
                       </div>
                     </div>
 
-                    <div className="budget-progress">
+                    <div className="budget-progress modern">
                       <div className="progress-info">
                         <span>{budget.spent_percentage.toFixed(1)}% used</span>
+                        <span className="progress-amount">{formatCurrency(budget.spent_amount)} / {formatCurrency(budget.budget_amount)}</span>
                       </div>
                       <div className="progress-bar">
                         <div
@@ -352,12 +408,12 @@ const Budget = () => {
               })}
             </div>
           ) : (
-            <div className="empty-state">
+            <div className="empty-state modern">
               <DollarSign size={48} />
               <h3>No budgets set for this period</h3>
-              <p>Start by setting budgets for your expense categories to track your spending.</p>
+              <p>Start by setting budgets for your expense categories to track your spending and achieve your financial goals.</p>
               <button
-                className="btn btn-primary"
+                className="btn btn-primary btn-large"
                 onClick={() => setShowModal(true)}
               >
                 <Plus size={20} /> Set Your First Budget
