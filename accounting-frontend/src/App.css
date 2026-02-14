@@ -4138,11 +4138,11 @@ body {
     height: 6px;
   }
   
-  .goals-grid .empty-state {
-    padding: 2rem 0.75rem;
-  }
-  
   .goals-grid .empty-state h3 {
     font-size: 1.125rem;
+  }
+
+  .goals-grid .empty-state {
+    padding: 2rem 0.75rem;
   }
 }
